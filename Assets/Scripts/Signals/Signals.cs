@@ -6,5 +6,11 @@ namespace Signals
 
     public class StartGameSignal : Signal {}
     
+    public class RestartGameSignal : Signal {}
+    
     public class LoseGameSignal : Signal {}
+    
+    public class BallHitPlayerSignal : Signal {}
+    
+    public class CurrentScoreChangedSignal : Signal<int> {}
 }

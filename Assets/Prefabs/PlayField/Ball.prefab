@@ -133,5 +133,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 853a526b09c14d2ebf189f7c7f27121b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _ball: {fileID: 0}
-  _ballSpeedLimits: {x: 8, y: 10}
+  _ballVelocityLimits: {x: 8, y: 12}
+  _ballSizeLimits: {x: 2, y: 6}

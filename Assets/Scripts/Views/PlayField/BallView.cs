@@ -6,7 +6,8 @@ namespace Views.PlayField
     [RequireComponent(typeof(Rigidbody2D))]
     public class BallView : View
     {
-        [SerializeField] private Vector2Int _ballSpeedLimits;
+        [SerializeField] private Vector2Int _ballVelocityLimits;
+        [SerializeField] private Vector2Int _ballSizeLimits;
 
         private Rigidbody2D _ball;
 
@@ -20,7 +21,8 @@ namespace Views.PlayField
         {
             base.OnEnable();
             _ball.position = Vector2.zero;
-            _ball.velocity = GetRandomVelocity(_ballSpeedLimits);
+            RandomizeVelocity();
+            RandomizeSize();
         }
 
         protected override void OnDisable()
@@ -29,11 +31,17 @@ namespace Views.PlayField
             _ball.velocity = Vector2.zero;
         }
 
-        private Vector2 GetRandomVelocity(Vector2 limits)
+        private void RandomizeVelocity()
         {
             var angle = Random.Range(0f, 2f * Mathf.PI);
-            var value = Random.Range(limits.x, limits.y);
-            return new Vector2(Mathf.Cos(angle) * value, Mathf.Sin(angle) * value);
+            var value = Random.Range(_ballVelocityLimits.x, _ballVelocityLimits.y);
+            _ball.velocity = new Vector2(Mathf.Cos(angle) * value, Mathf.Sin(angle) * value);
+        }
+
+        private void RandomizeSize()
+        {
+            var ballSize = Random.Range(_ballSizeLimits.x, _ballSizeLimits.y);
+            transform.localScale = new Vector3(ballSize, ballSize, transform.localScale.z);
         }
     }
 }

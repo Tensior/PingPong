@@ -6,12 +6,13 @@ namespace Commands
 {
     public class LoseGameCommand : Command
     {
-        [Inject] public StartGameSignal StartGameSignal { get; set; }
+        [Inject] public RestartGameSignal RestartGameSignal { get; set; }
         public override void Execute()
         {
             Debug.Log("LoseGameCommand");
+            
             //blabla...
-            StartGameSignal.Dispatch();
+            RestartGameSignal.Dispatch();
         }
     }
 }

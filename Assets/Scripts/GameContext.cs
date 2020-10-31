@@ -1,6 +1,8 @@
 using Commands;
 using Input;
 using Mediators.PlayField;
+using Mediators.UI;
+using Models;
 using Signals;
 using strange.extensions.command.api;
 using strange.extensions.command.impl;
@@ -8,6 +10,7 @@ using strange.extensions.context.api;
 using strange.extensions.context.impl;
 using UnityEngine;
 using Views.PlayField;
+using Views.UI;
 
 public class GameContext : MVCSContext
 {
@@ -27,16 +30,29 @@ public class GameContext : MVCSContext
 		
 	protected override void mapBindings()
 	{
-		//Сигналы и команды
+		//Сигналы и команды-----------------------------------------------------------
 		commandBinder.Bind<StartSignal>().To<StartCommand>().Once();
 		commandBinder.Bind<LoseGameSignal>().To<LoseGameCommand>();
-		injectionBinder.Bind<StartGameSignal>().ToSingleton();
+		commandBinder.Bind<RestartGameSignal>().To<RestartGameCommand>();
+		commandBinder.Bind<BallHitPlayerSignal>().To<IncreaseScoreCommand>();
 
-		//Вьюшки
+		injectionBinder.Bind<StartGameSignal>().ToSingleton();
+		injectionBinder.Bind<CurrentScoreChangedSignal>().ToSingleton();
+		
+		//Модели----------------------------------------------------------------------
+		injectionBinder.Bind<IScoreModel>().To<ScoreModel>().ToSingleton();
+
+
+		//Вьюшки----------------------------------------------------------------------
+		
+		//Gameplay
 		mediationBinder.Bind<PlayFieldView>().To<PlayFieldMediator>();
 		mediationBinder.Bind<BallView>().To<BallMediator>();
 		mediationBinder.Bind<PlayerPlatformView>().To<PlayerPlatformMediator>();
 		mediationBinder.Bind<ScreenLimitView>().To<ScreenLimitMediator>();
+		
+		//UI
+		mediationBinder.Bind<ScoreView>().To<ScoreMediator>();
 
 
 #if UNITY_ANDROID && !UNITY_EDITOR

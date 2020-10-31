@@ -1,4 +1,5 @@
-﻿using strange.extensions.mediation.impl;
+﻿using System;
+using strange.extensions.mediation.impl;
 using UnityEngine;
 
 namespace Views.PlayField
@@ -6,6 +7,7 @@ namespace Views.PlayField
     [RequireComponent(typeof(Rigidbody2D))]
     public class PlayerPlatformView : View
     {
+        public event Action OnBallHit;
         [SerializeField] private float _movementSpeed = 30;
         
         private Rigidbody2D _rigidbody2d;
@@ -24,6 +26,13 @@ namespace Views.PlayField
         {
             _rigidbody2d.MovePosition(_rigidbody2d.position + translation * _movementSpeed * Vector2.right);
         }
-        
+
+        private void OnCollisionEnter2D(Collision2D other)
+        {
+            if (other.gameObject.GetComponent<BallView>() != null)
+            {
+                OnBallHit?.Invoke();
+            }
+        }
     }
 }
