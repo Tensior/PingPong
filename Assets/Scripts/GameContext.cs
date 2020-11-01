@@ -3,6 +3,7 @@ using Input;
 using Mediators.PlayField;
 using Mediators.UI;
 using Models;
+using Services;
 using Signals;
 using strange.extensions.command.api;
 using strange.extensions.command.impl;
@@ -53,6 +54,9 @@ public class GameContext : MVCSContext
 		
 		//UI
 		mediationBinder.Bind<ScoreView>().To<ScoreMediator>();
+		
+		//Сервисы----------------------------------------------------------------------
+		injectionBinder.Bind<IPlayerDataService>().To<PlayerPrefsService>().ToSingleton();
 
 
 #if UNITY_ANDROID && !UNITY_EDITOR

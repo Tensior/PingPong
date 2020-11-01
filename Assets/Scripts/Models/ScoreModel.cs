@@ -14,6 +14,10 @@ namespace Models
             set
             {
                 _currentScore = value;
+                if (_currentScore > BestScore)
+                {
+                    BestScore = _currentScore;
+                }
                 CurrentScoreChangedSignal.Dispatch(_currentScore);
             }
         }

@@ -1,4 +1,5 @@
-﻿using strange.extensions.mediation.impl;
+﻿using Models;
+using strange.extensions.mediation.impl;
 using UnityEngine;
 using UnityEngine.UI;
 
