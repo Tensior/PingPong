@@ -3,24 +3,26 @@ using UnityEngine;
 
 namespace Views.PlayField
 {
-    [RequireComponent(typeof(Rigidbody2D))]
+    [RequireComponent(typeof(Rigidbody2D), typeof(SpriteRenderer))]
     public class BallView : View
     {
         [SerializeField] private Vector2Int _ballVelocityLimits;
         [SerializeField] private Vector2Int _ballSizeLimits;
 
-        private Rigidbody2D _ball;
+        private Rigidbody2D _ballRigidbody2D;
+        private SpriteRenderer _ballSpriteRenderer;
 
         protected override void Awake()
         {
             base.Awake();
-            _ball = GetComponent<Rigidbody2D>();
+            _ballRigidbody2D = GetComponent<Rigidbody2D>();
+            _ballSpriteRenderer = GetComponent<SpriteRenderer>();
         }
 
         protected override void OnEnable()
         {
             base.OnEnable();
-            _ball.position = Vector2.zero;
+            _ballRigidbody2D.position = Vector2.zero;
             RandomizeVelocity();
             RandomizeSize();
         }
@@ -28,14 +30,19 @@ namespace Views.PlayField
         protected override void OnDisable()
         {
             base.OnDisable();
-            _ball.velocity = Vector2.zero;
+            _ballRigidbody2D.velocity = Vector2.zero;
+        }
+
+        public void SetBallColor(Color color)
+        {
+            _ballSpriteRenderer.color = color;
         }
 
         private void RandomizeVelocity()
         {
             var angle = Random.Range(0f, 2f * Mathf.PI);
             var value = Random.Range(_ballVelocityLimits.x, _ballVelocityLimits.y);
-            _ball.velocity = new Vector2(Mathf.Cos(angle) * value, Mathf.Sin(angle) * value);
+            _ballRigidbody2D.velocity = new Vector2(Mathf.Cos(angle) * value, Mathf.Sin(angle) * value);
         }
 
         private void RandomizeSize()

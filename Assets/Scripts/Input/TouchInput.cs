@@ -2,7 +2,7 @@
 
 namespace Input
 {
-    class TouchInput : IInput
+    public class TouchInput : IInput
     {
         private float _previousPositionX;
         public float GetHorizontalInput()
@@ -23,9 +23,7 @@ namespace Input
                 input = (touch.position.x - _previousPositionX) * 30 / Screen.width;
                 _previousPositionX = touch.position.x;
             }
-
-            Debug.Log(input);
-
+            
             return input;
         }
     }

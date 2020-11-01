@@ -1,19 +1,29 @@
-﻿using UnityEngine;
+﻿using Models;
+using UnityEngine;
 
 namespace Services
 {
     public class PlayerPrefsService : IPlayerDataService
     {
-        private const string BEST_SCORE_KEY = "BestScore";
+        [Inject] public IScoreModel ScoreModel { get; set; }
+        [Inject] public IBallModel BallModel { get; set; }
         
-        public PlayerData Load()
+        private const string BEST_SCORE_KEY = "BestScore";
+        private const string BALL_COLOR_KEY = "BallColor";
+        
+        public void Load()
         {
-            return new PlayerData(PlayerPrefs.GetInt(BEST_SCORE_KEY));
+            ScoreModel.BestScore = PlayerPrefs.GetInt(BEST_SCORE_KEY);
+            if (ColorUtility.TryParseHtmlString(PlayerPrefs.GetString(BALL_COLOR_KEY), out var ballColor))
+            {
+                BallModel.Color = ballColor;
+            }
         }
 
-        public void Save(PlayerData playerData)
+        public void Save()
         {
-            PlayerPrefs.SetInt(BEST_SCORE_KEY, playerData.BestScore);
+            PlayerPrefs.SetInt(BEST_SCORE_KEY, ScoreModel.BestScore);
+            PlayerPrefs.SetString(BALL_COLOR_KEY, "#" + ColorUtility.ToHtmlStringRGBA(BallModel.Color));
             PlayerPrefs.Save();
         }
     }

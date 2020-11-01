@@ -5,6 +5,7 @@ namespace Models
     class ScoreModel : IScoreModel
     {
         [Inject] public CurrentScoreChangedSignal CurrentScoreChangedSignal { get; set; }
+        [Inject] public SaveGameSignal SaveGameSignal { get; set; }
 
         public int BestScore { get; set; }
 
@@ -17,6 +18,7 @@ namespace Models
                 if (_currentScore > BestScore)
                 {
                     BestScore = _currentScore;
+                    SaveGameSignal.Dispatch();
                 }
                 CurrentScoreChangedSignal.Dispatch(_currentScore);
             }

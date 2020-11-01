@@ -2,7 +2,7 @@
 {
     public interface IPlayerDataService
     {
-        PlayerData Load();
-        void Save(PlayerData playerData);
+        void Load();
+        void Save();
     }
 }

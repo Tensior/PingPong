@@ -8,6 +8,7 @@ namespace Views.PlayField
     public class PlayerPlatformView : View
     {
         public event Action OnBallHit;
+        
         [SerializeField] private float _movementSpeed = 30;
         
         private Rigidbody2D _rigidbody2d;

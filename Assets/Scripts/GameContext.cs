@@ -5,8 +5,6 @@ using Mediators.UI;
 using Models;
 using Services;
 using Signals;
-using strange.extensions.command.api;
-using strange.extensions.command.impl;
 using strange.extensions.context.api;
 using strange.extensions.context.impl;
 using UnityEngine;
@@ -19,29 +17,34 @@ public class GameContext : MVCSContext
 	public GameContext (MonoBehaviour view) : base(view)
 	{
 	}
-
-	// Override Start so that we can fire the StartSignal 
+	
 	public override IContext Start()
 	{
 		base.Start();
-		var startSignal= injectionBinder.GetInstance<StartSignal>();
-		startSignal.Dispatch();
+		var launchSignal= injectionBinder.GetInstance<LaunchSignal>();
+		launchSignal.Dispatch();
 		return this;
 	}
 		
 	protected override void mapBindings()
 	{
 		//Сигналы и команды-----------------------------------------------------------
-		commandBinder.Bind<StartSignal>().To<StartCommand>().Once();
-		commandBinder.Bind<StopGameSignal>().To<StopGameCommand>();
-		commandBinder.Bind<RestartGameSignal>().To<RestartGameCommand>();
+		commandBinder.Bind<LaunchSignal>().To<LaunchCommand>().Once();
+		
+		commandBinder.Bind<BallOutOfScreenSignal>().To<RestartGameCommand>();
+		commandBinder.Bind<SaveGameSignal>().To<SaveGameCommand>();
 		commandBinder.Bind<BallHitPlayerSignal>().To<IncreaseScoreCommand>();
+		commandBinder.Bind<ChoseBallColorButtonSignal>().To<PauseGameCommand>();
+		commandBinder.Bind<BallColorChosenSignal>().To<SetBallColor>().To<UnpauseGameCommand>().InSequence();
 
 		injectionBinder.Bind<StartGameSignal>().ToSingleton();
+		injectionBinder.Bind<StopGameSignal>().ToSingleton();
 		injectionBinder.Bind<CurrentScoreChangedSignal>().ToSingleton();
+		injectionBinder.Bind<BallColorChangedSignal>().ToSingleton();
 		
 		//Модели----------------------------------------------------------------------
 		injectionBinder.Bind<IScoreModel>().To<ScoreModel>().ToSingleton();
+		injectionBinder.Bind<IBallModel>().To<BallModel>().ToSingleton();
 
 
 		//Вьюшки----------------------------------------------------------------------
@@ -53,7 +56,9 @@ public class GameContext : MVCSContext
 		mediationBinder.Bind<ScreenLimitView>().To<ScreenLimitMediator>();
 		
 		//UI
+		mediationBinder.Bind<UIView>().To<UIMediator>();
 		mediationBinder.Bind<ScoreView>().To<ScoreMediator>();
+		mediationBinder.Bind<ColorChoiceView>().To<ColorChoiceMediator>();
 		
 		//Сервисы----------------------------------------------------------------------
 		injectionBinder.Bind<IPlayerDataService>().To<PlayerPrefsService>().ToSingleton();
@@ -64,24 +69,5 @@ public class GameContext : MVCSContext
 #else
 		injectionBinder.Bind<IInput>().To<KeyboardInput>().ToSingleton();
 #endif
-		
-		/*injectionBinder.Bind<IExampleModel>().To<ExampleModel>().ToSingleton();
-		injectionBinder.Bind<IExampleService>().To<ExampleService>().ToSingleton();
-			
-
-		mediationBinder.Bind<ExampleView>().To<ExampleMediator>();
-			
-
-		commandBinder.Bind<CallWebServiceSignal>().To<CallWebServiceCommand>();
-			
-		//StartSignal is now fired instead of the START event.
-		//Note how we've bound it "Once". This means that the mapping goes away as soon as the command fires.
-		
-			
-		//In MyFirstProject, there's are SCORE_CHANGE and FULFILL_SERVICE_REQUEST Events.
-		//Here we change that to a Signal. The Signal isn't bound to any Command,
-		//so we map it as an injection so a Command can fire it, and a Mediator can receive it
-		injectionBinder.Bind<ScoreChangedSignal>().ToSingleton();
-		injectionBinder.Bind<FulfillWebServiceRequestSignal>().ToSingleton();*/
 	}
 }

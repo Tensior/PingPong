@@ -1,12 +1,16 @@
-﻿using Views.PlayField;
+﻿using Signals;
+using Views.PlayField;
 
 namespace Mediators.PlayField
 {
     public class BallMediator : Mediator<BallView>
     {
-        public override void OnEnabled()
+        [Inject] public BallColorChangedSignal BallColorChangedSignal { get; set; }
+
+        public override void OnRegister()
         {
-            base.OnEnabled();
+            base.OnRegister();
+            BallColorChangedSignal.AddListener(View.SetBallColor);
         }
     }
 }

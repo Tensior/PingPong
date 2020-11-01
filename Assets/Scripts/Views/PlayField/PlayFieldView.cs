@@ -35,8 +35,9 @@ namespace Views.PlayField
             if (isActive)
             {
                 //Задержка перед появлением мячика, чтобы для игрока было не так внезапно
-                await Task.Delay(1000);
+                await Task.Delay(500);
             }
+
             _ball.gameObject.SetActive(isActive);
         }
     }

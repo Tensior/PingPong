@@ -7,11 +7,14 @@ namespace Views.PlayField
     [RequireComponent(typeof(Collider2D))]
     public class ScreenLimitView : View
     {
-        public event Action OnCollision;
+        public event Action OnBallCollision;
 
         private void OnTriggerExit2D(Collider2D other)
         {
-            OnCollision?.Invoke();
+            if (other.GetComponent<BallView>() != null)
+            {
+                OnBallCollision?.Invoke();
+            }
         }
     }
 }
