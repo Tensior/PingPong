@@ -7,7 +7,7 @@ namespace Mediators.PlayField
     public class PlayFieldMediator : Mediator<PlayFieldView>
     {
         [Inject] public StartGameSignal StartGameSignal { get; set; }
-        [Inject] public LoseGameSignal LoseGameSignal { get; set; }
+        [Inject] public StopGameSignal stopGameSignal { get; set; }
 
         public override void OnRegister()
         {
@@ -17,9 +17,9 @@ namespace Mediators.PlayField
                 Debug.Log("StartGameSignal Listener");
                 View.gameObject.SetActive(true);
             });
-            LoseGameSignal.AddListener(() =>
+            stopGameSignal.AddListener(() =>
             {
-                Debug.Log("LoseGameSignal Listener");
+                Debug.Log("StopGameSignal Listener");
                 View.gameObject.SetActive(false);
             });
         }

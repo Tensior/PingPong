@@ -33,7 +33,7 @@ public class GameContext : MVCSContext
 	{
 		//Сигналы и команды-----------------------------------------------------------
 		commandBinder.Bind<StartSignal>().To<StartCommand>().Once();
-		commandBinder.Bind<LoseGameSignal>().To<LoseGameCommand>();
+		commandBinder.Bind<StopGameSignal>().To<StopGameCommand>();
 		commandBinder.Bind<RestartGameSignal>().To<RestartGameCommand>();
 		commandBinder.Bind<BallHitPlayerSignal>().To<IncreaseScoreCommand>();
 

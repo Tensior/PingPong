@@ -8,7 +8,7 @@ namespace Signals
     
     public class RestartGameSignal : Signal {}
     
-    public class LoseGameSignal : Signal {}
+    public class StopGameSignal : Signal {}
     
     public class BallHitPlayerSignal : Signal {}
     

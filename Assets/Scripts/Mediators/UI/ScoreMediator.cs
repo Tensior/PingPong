@@ -8,7 +8,7 @@ namespace Mediators.UI
     {
         [Inject] public CurrentScoreChangedSignal CurrentScoreChangedSignal { get; set; }
         [Inject] public StartGameSignal StartGameSignal { get; set; }
-        [Inject] public LoseGameSignal LoseGameSignal { get; set; }
+        [Inject] public StopGameSignal stopGameSignal { get; set; }
         [Inject] public IScoreModel ScoreModel { get; set; }
 
         public override void OnRegister()
@@ -20,7 +20,7 @@ namespace Mediators.UI
                 View.gameObject.SetActive(true);
                 View.SetBestScore(ScoreModel.BestScore);
             });
-            LoseGameSignal.AddListener(() => View.gameObject.SetActive(false));
+            stopGameSignal.AddListener(() => View.gameObject.SetActive(false));
         }
     }
 }
